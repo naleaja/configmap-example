@@ -16,12 +16,14 @@
  */
 package dev.snowdrop.example.service;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class GreetingController {
@@ -45,5 +47,26 @@ public class GreetingController {
         }
 
         return new Greeting(String.format("%s %s! Welcome to Configuring Spring Boot on Kubernetes!", prefix, name));
+    }
+    
+    @RequestMapping("/api/greeting2")
+    public Greeting greeting2(@RequestParam(value = "name", defaultValue = "World") String name) {
+        Objects.requireNonNull(properties.getMessage(), "Greeting message was not set in the properties");
+
+        String message = String.format(properties.getMessage(), name);
+        return new Greeting(message);
+    }
+    
+    @RequestMapping("/api/greeting3")
+    public Greeting greeting3(@RequestParam(value = "name", defaultValue = "World") String name) {
+    	String json = System.getenv().getOrDefault("jsonconfig", "Hi");
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	WebconsoleSettingDto read = new WebconsoleSettingDto();
+    	try {
+    		read = objectMapper.readValue(json, WebconsoleSettingDto.class);
+    	} catch (IOException e) {
+    		
+    	}
+        return new Greeting(read.getAppSetting().toString());
     }
 }
