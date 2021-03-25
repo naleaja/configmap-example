@@ -35,9 +35,15 @@ public class GreetingController {
 
     @RequestMapping("/api/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        Objects.requireNonNull(properties.getMessage(), "Greeting message was not set in the properties");
+        //Objects.requireNonNull(properties.getMessage(), "Greeting message was not set in the properties");
 
-        String message = String.format(properties.getMessage(), name);
-        return new Greeting(message);
+        //String message = String.format(properties.getMessage(), name);
+        //return new Greeting(message);
+    	String prefix = System.getenv().getOrDefault("appconfig", "Hi");
+        if (prefix == null) {
+            prefix = "Hello!";
+        }
+
+        return new Greeting(String.format("%s %s! Welcome to Configuring Spring Boot on Kubernetes!", prefix, name));
     }
 }
