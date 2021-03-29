@@ -110,7 +110,7 @@
     $("#invoke3").click(function (e) {
         var n = $("#name").val() || "World";
         $.getJSON("/api/greeting3?name=" + n, function (res) {
-          $("#greeting-result2").html(JSON.stringify(res));
+          $("#greeting-result3").html(JSON.stringify(res));
         }).fail(function (res) {
           $("#greeting-result3").html(res.responseJSON.error + " - " + res.responseJSON.message);
         });
