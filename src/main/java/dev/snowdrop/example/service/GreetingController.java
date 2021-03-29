@@ -42,9 +42,9 @@ public class GreetingController {
         //String message = String.format(properties.getMessage(), name);
         //return new Greeting(message);
     	String prefix = System.getenv().getOrDefault("appconfig", "Hi");
-        if (prefix == null) {
+        /*if (prefix == null) {
             prefix = "Hello!";
-        }
+        }*/
 
         return new Greeting(String.format("%s %s! Welcome to Configuring Spring Boot on Kubernetes!", prefix, name));
     }
